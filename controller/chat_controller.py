@@ -10,7 +10,7 @@ from controller.menus.chat_menu_controller import ChatMenuController
 from controller.menus.chat_filter_controller import ChatFilterController
 from controller.editor_controller import EditorController
 from ui.dialog_response import response
-from ui.player_lives import PlayerUI
+from ui.player_lives_dialog import PlayerUIDialog
 from servicios.estadisticas_manager import EstadisticasManager
 from utils.funciones import escribirJsonLista, extractUser
 from helpers.keyboard_handler.wx_handler import WXKeyboardHandler
@@ -72,7 +72,7 @@ class ChatController:
         self.ui.PopupMenu(menu.menu)
 
     def on_show_repro(self, event):
-        self.repro = PlayerUI(self.ui, title=_(u"Reproductor"))
+        self.repro = PlayerUIDialog(self.ui,media=self.media_controller, title=_("Reproductor"))
         self.repro.show_player()
 
 

@@ -1,10 +1,12 @@
 import wx
-from controller.media_controller import MediaController
+# from controller.media_controller import MediaController
+# from players import media_handler
 
-class PlayerUI(wx.Dialog):
-    def __init__(self, parent, title):
-        super(PlayerUI, self).__init__(parent, title=title, size=(400, 200))
-        self.media_controller = MediaController(url=None)
+class PlayerUIDialog(wx.Dialog):
+    def __init__(self, parent, media, title):
+        super(PlayerUIDialog, self).__init__(parent, title=title, size=(400, 200))
+        self.media_controller = media
+        # self.url = url
 
         panel = wx.Panel(self)
         
@@ -14,12 +16,12 @@ class PlayerUI(wx.Dialog):
         volume_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         # Controles
-        self.play_pause_btn = wx.Button(panel, label=_(u"Reproducir"))
-        self.avanzar_live_btn = wx.Button(panel, label=_(u"Adelantar hasta el tiempo actual de la transmisión"))
-        self.mute_btn = wx.Button(panel, label=_(u"Silenciar"))
-        self.stop_live_btn = wx.Button(panel, label=_(u"Detener reproducción de trasmisión"))
+        self.play_pause_btn = wx.Button(panel, label=_("Reproducir"))
+        self.avanzar_live_btn = wx.Button(panel, label=_("Adelantar hasta el tiempo actual de la transmisión"))
+        self.mute_btn = wx.Button(panel, label=_("Silenciar"))
+        self.stop_live_btn = wx.Button(panel, label=_("Detener reproducción de trasmisión"))
         
-        self.volume_label = wx.StaticText(panel, label=_(u"Volumen:"))
+        self.volume_label = wx.StaticText(panel, label=_("Volumen:"))
         self.volume_slider = wx.Slider(panel, value=100, minValue=0, maxValue=100,
                                         style=wx.SL_HORIZONTAL | wx.SL_AUTOTICKS)
 
@@ -46,15 +48,17 @@ class PlayerUI(wx.Dialog):
         self.Bind(wx.EVT_BUTTON, self.on_mute, self.mute_btn)
         self.Bind(wx.EVT_BUTTON, self.on_stop, self.stop_live_btn)
         self.Bind(wx.EVT_SLIDER, self.on_volume_change, self.volume_slider)
-        self.is_paused = True
+        self.is_paused = False
 
     # Métodos para la funcionalidad (listos para ser implementados)
     def on_play_pause(self, event):
-        self.media_controller.toggle_pause()
-        if self.is_paused:
-            self.play_pause_btn.SetLabel(_(u"&Pausar"))
+        if not self.is_paused:
+            self.media_controller.toggle_pause()
+            self.media_controller.toggle_pause()
+            self.play_pause_btn.SetLabel(_("Pausar"))
         else:
-            self.play_pause_btn.SetLabel(_(u"Reproducir"))
+                        self.media_controller.toggle_pause()
+                        self.play_pause_btn.SetLabel(_("Reproducir"))
         self.is_paused = not self.is_paused
         # print("Botón Play/pause presionado.")
 
@@ -72,14 +76,15 @@ class PlayerUI(wx.Dialog):
         print(f"Volumen cambiado a: {volume_level}")
 
     def show_player(self):
-        return self.ShowModal()
+        self.ShowModal()
+        self.Destroy()
     
     def close_player(self):
         return self.Destroy()
 
 if __name__ == '__main__':
     app = wx.App()
-    dialog = PlayerUI(None, _(u"Reproductor de Audio"))
+    dialog = PlayerUIDialog(None, _("Reproductor de Audio"))
     dialog.ShowModal()
     dialog.Destroy()
     app.MainLoop()
