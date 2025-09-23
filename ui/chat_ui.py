@@ -39,6 +39,8 @@ class ChatDialog(wx.Dialog):
         bottom_sizer.AddStretchSpacer()
         self.boton_eliminar = wx.Button(self, wx.ID_ANY, _(u"&Eliminar"))
         bottom_sizer.Add(self.boton_eliminar, 0, wx.ALL, 5)
+        self.boton_repro = wx.Button(self, wx.ID_ANY, _(u"&Mostrar reproductor"))
+        bottom_sizer.Add(self.boton_repro, 0, wx.ALL, 5)
         self.boton_opciones = wx.Button(self, wx.ID_ANY, _(u"&Opciones"))
         self.boton_opciones.SetAccessible(Accesible(self.boton_opciones))
         bottom_sizer.Add(self.boton_opciones, 0, wx.ALL, 5)

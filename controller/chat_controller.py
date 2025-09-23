@@ -10,6 +10,7 @@ from controller.menus.chat_menu_controller import ChatMenuController
 from controller.menus.chat_filter_controller import ChatFilterController
 from controller.editor_controller import EditorController
 from ui.dialog_response import response
+from ui.player_lives import PlayerUI
 from servicios.estadisticas_manager import EstadisticasManager
 from utils.funciones import escribirJsonLista, extractUser
 from helpers.keyboard_handler.wx_handler import WXKeyboardHandler
@@ -37,6 +38,7 @@ class ChatController:
 
     def _bind_events(self):
         self.ui.button_mensaje_detener.Bind(wx.EVT_BUTTON, self.on_close_dialog)
+        self.ui.boton_repro.Bind(wx.EVT_BUTTON, self.on_show_repro)
         self.ui.boton_opciones.Bind(wx.EVT_BUTTON, self.on_opciones_btn)
         self.ui.boton_eliminar.Bind(wx.EVT_BUTTON, self.on_eliminar_pestaña)
         if self.plataforma == 'TikTok' and hasattr(self.ui, 'boton_filtrar'): self.ui.boton_filtrar.Bind(wx.EVT_BUTTON, self.on_filter_btn)
@@ -68,6 +70,11 @@ class ChatController:
         menu = ChatItemMenu(self.ui)
         ChatItemController(menu, list_box, self.plataforma, self.ui.label_dialog)
         self.ui.PopupMenu(menu.menu)
+
+    def on_show_repro(self, event):
+        self.repro = PlayerUI(self.ui, title=_(u"Reproductor"))
+        self.repro.show_player()
+
 
     def on_opciones_btn(self, event):
         self.menu_opciones_controller.menu.popup(self.ui.boton_opciones)
